@@ -5,8 +5,8 @@ import { styles } from './styles.js';
 
 function Login(props){
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [error, setError] = useState(false);
 
   function onAuthStateChanged(user) {
@@ -21,14 +21,17 @@ function Login(props){
   }, []);
 
   function handleLogin(){
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        props.navigation.navigate('Home')
-      })
-      .catch(error => {
-        setError(true);
-      });
+    if(email && password)
+      auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          props.navigation.navigate('Home')
+        })
+        .catch(error => {
+          setError('Usuário ou senha inválido');
+        });
+    else
+      setError('Preencha a senha e email')
   }
 
   return (
@@ -49,7 +52,7 @@ function Login(props){
       />
       {
         error &&
-        <Text style={styles.errorText}>Usuário ou senha inválido</Text>
+        <Text style={styles.errorText}>{error}</Text>
       }
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
