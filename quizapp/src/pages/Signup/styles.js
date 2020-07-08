@@ -30,11 +30,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     color: '#aaa',
-    borderColor: '#555'
+    borderColor: '#555',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   label: {
     fontWeight: '500',
-    color: '#555'
   },
   errorText: {
     color: 'red',

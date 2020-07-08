@@ -51,12 +51,21 @@ function Login(props){
         error &&
         <Text style={styles.errorText}>Usuário ou senha inválido</Text>
       }
-      <TouchableOpacity
-        onPress={handleLogin}
-        style={styles.button}
-      >
-        <Text style={styles.label}>Entrar</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('Signup')}
+          style={styles.button}
+        >
+          <Text style={styles.label}>Criar Conta</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleLogin}
+          style={{...styles.button, marginLeft: 10}}
+        >
+          <Text style={styles.label}>Entrar</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 

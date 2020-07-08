@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-native';
-import { getCategories } from '../../services/api.js';
+import { getCategories, getQuestions, updateQuestion } from '../../services/api.js';
 import { styles } from './styles.js';
 
 function Home(props){
@@ -10,6 +10,10 @@ function Home(props){
   useEffect(() => {
     async function fetchCategories(){
       let res = await getCategories();
+      console.log(res);
+      let questions = await getQuestions({filters: {}});
+      updateQuestion({_id: questions[0]['_id'], ans_id: 1})
+      console.log(questions);
       setCategories(res);
     }
     fetchCategories();

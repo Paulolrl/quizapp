@@ -1,4 +1,5 @@
 from flask import Flask, json, request
+from bson import json_util
 from functools import wraps
 from firebase_admin import auth
 from database import DataBase
@@ -17,19 +18,46 @@ def protected(f):
             uid = decoded_token['uid']
         except:
             return 'Não autorizado', 403
-        return f(*args, **kwargs)
+        return f(uid, *args, **kwargs)
     return decorated_function
 
-@api.route('/quizz/questions', methods=['POST'])
+@api.route('/quiz/questions', methods=['POST'])
 @protected
-def get_questions():
-    filters = json.load(request.data['filters'])
-    return json.dumps(db.find_questions(filters))
+def get_questions(uid):
+    filters = json.loads(request.data)['filters']
+    print(filters, uid)
+    return json_util.dumps(db.find_questions(filters))
 
-@api.route('/quizz/categories', methods=['GET'])
+@api.route('/quiz/questions/update', methods=['POST'])
 @protected
-def get_categories():
-    return json.dumps(db.get_all_categories())
+def update_question(uid):
+    body = json_util.loads(request.data)
+    db.update_question(body['_id'], body['ans_id'])
+    return 'Questão atualizada'
+
+@api.route('/quiz/categories', methods=['GET'])
+@protected
+def get_categories(uid):
+    return json_util.dumps(db.get_all_categories())
+
+@api.route('/user/create', methods=['POST'])
+@protected
+def create_user(uid):
+    attrs = json_util.loads(request.data)
+    return json_util.dumps(db.create_user(uid, attrs))
+
+@api.route('/user/update_progress', methods=['POST'])
+@protected
+def update_progress(uid):
+    body = json_util.loads(request.data)
+    db.update_progress(uid, body['category'], body['value'])
+    return 'Progresso atualizado'
+
+@api.route('/user', methods=['GET'])
+@protected
+def get_user(uid):
+    return json_util.dumps(db.get_user(uid))
+
 
 if __name__ == '__main__':
     default_app = firebase_admin.initialize_app()

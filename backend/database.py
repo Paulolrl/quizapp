@@ -8,23 +8,54 @@ class DataBase():
         with open('config.json') as f:
             config = json.load(f)
         client = MongoClient(config['mongokey'])
-        self.db = client.quizz
+        self.db_quiz = client.quiz
+        self.db_admin = client.administrative
 
     def insert_question(self, attrs):
-        self.db.questions.insert_one(attrs)
+        self.db_quiz
+        self.db_quiz.questions.insert_one(attrs)
 
     def find_questions(self, filters):
-        return list(self.db.questions.find(filters, {'_id': False}))
+        return list(self.db_quiz.questions.find(filters))
 
     def insert_category(self, attrs):
-        self.db.category.insert_one(attrs)
+        self.db_quiz.category.insert_one(attrs)
 
     def get_all_categories(self):
-        return list(self.db.category.find({}, {'_id': False}))
+        return list(self.db_quiz.category.find({}))
 
-# q = {'type': 'MULTIPLE_CHOICE', 'text': 'quanto é 1+2?', 'answers': [{'id': 1, 'text': '2'}, {'id': 2, 'text': '3'}], 'right_answer': 2, 'category': 'MATH'}
+    def create_user(self, uid, attrs):
+        categories = self.get_all_categories()
+        progress = {}
+        for cat in categories:
+            progress[cat['identifier']] = 0
+        attrs['_id'] = uid
+        attrs['progress'] = progress
+        self.db_admin.users.insert_one(attrs)
+        return attrs
+
+    def update_progress(self, uid, category, value):
+        self.db_admin.users.update_one({'_id': uid}, {'$set': {'progress.'+category: value }})
+
+    def update_question(self, _id, ans_id):
+        self.db_quiz.questions.update_one({'_id': _id}, {'$inc': {'answers.'+str(ans_id)+'.count': 1 }})
+
+    def get_users(self):
+        return list(self.db_admin.users.find({}))
+
+    def get_user(self, uid):
+        return self.db_admin.users.find({'_id': uid})
+
+# db = DataBase()
+# db.create_user('fad89fds7a98fkw', {'email': 'paulo.lu@g.com', 'name': 'Paulo Lucas Rodrigues'})
+# print(db.get_users())
+# db.update_progress('fad89fds7a98fkw', 'MATH', 5)
+# print(db.get_users())
+
+
+# q = {'type': 'MULTIPLE_CHOICE', 'text': 'quanto é 1+2?', 'answers': [{'id': 0, 'text': '2', 'count': 0}, {'id': 1, 'text': '3', 'count': 2}], 'right_answer': 1, 'category': 'MATH'}
 # db = DataBase()
 # db.insert_question(q)
 # db.find_questions({'type': 'MULTIPLE_CHOICE'})
-# db.insert_category({'name': {'pt': 'Geral'}, 'color': '#ff0000', 'identifier': 'GENERAL', 'description': {'pt': 'perguntas de conhecimento geral'}})
+# db.insert_category({'name': {'pt': 'Matemática'}, 'color': '#00ff00', 'identifier': 'MATH', 'description': {'pt': 'perguntas de matemática'}})
 # print(db.get_all_categories())
