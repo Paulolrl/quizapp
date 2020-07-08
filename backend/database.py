@@ -12,8 +12,10 @@ class DataBase():
         self.db_admin = client.administrative
 
     def insert_question(self, attrs):
-        self.db_quiz
         self.db_quiz.questions.insert_one(attrs)
+
+    def insert_multiple_questions(self, questions):
+        self.db_quiz.questions.insert_many(questions)
 
     def find_questions(self, filters):
         return list(self.db_quiz.questions.find(filters))
