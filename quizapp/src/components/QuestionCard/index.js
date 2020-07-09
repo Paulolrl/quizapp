@@ -13,6 +13,7 @@ function QuestionCard(props){
         question.answers &&
         question.answers.map((ans, index) =>
           <TouchableOpacity
+            key={index}
             style={styles.answerCard}
             onPress={() => props.onAnswerPress(question, ans)}>
             <Text style={styles.answerText}>{(index + 1)+ ' - ' + ans.text}</Text>

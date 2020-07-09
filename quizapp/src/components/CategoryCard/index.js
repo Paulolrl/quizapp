@@ -9,7 +9,7 @@ function CategoryCard(props){
   return(
     <TouchableOpacity
       style={{...styles.card, backgroundColor: category.color}}
-      onPress={() => onCategoryPress(category)}>
+      onPress={() => props.onCategoryPress(category)}>
       <Text style={styles.title}>{category.name.pt}</Text>
     </TouchableOpacity>
   )

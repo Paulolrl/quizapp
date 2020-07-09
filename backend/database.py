@@ -13,12 +13,16 @@ class DataBase():
 
     def insert_question(self, attrs):
         self.db_quiz.questions.insert_one(attrs)
+        self.db_quiz.category.update_one({'identifier': attrs['category']}, {'$inc': {'count': 1}})
 
     def insert_multiple_questions(self, questions):
         self.db_quiz.questions.insert_many(questions)
+        categories = self.get_all_categories()
+        for cat in categories:
+            count = self.db_quiz.questions.find({'category': cat['identifier']}).count()
+            self.db_quiz.category.update_one({'identifier': cat['identifier']}, {'$set': {'count': count}})
 
     def find_questions(self, filters):
-        print('nodb:', filters)
         return list(self.db_quiz.questions.find(filters))
 
     def insert_category(self, attrs):

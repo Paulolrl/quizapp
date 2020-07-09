@@ -4,9 +4,13 @@ import { getCategories } from '../../services/api.js';
 import CategoryCard from '../../components/CategoryCard';
 import { styles } from './styles.js';
 
+const { width } = Dimensions.get('window');
+
 function Home(props){
 
   const [categories, setCategories] = useState([]);
+  const [page, setPage] = useState(0);
+  let scroll;
 
   useEffect(() => {
     async function fetchCategories(){
@@ -24,6 +28,16 @@ function Home(props){
     props.navigation.navigate('Question', {identifier: category.identifier, color: category.color})
   }
 
+  function onScroll(event) {
+    setPage(
+      Math.round(event.nativeEvent.contentOffset.x / width),
+    );
+  }
+
+  function scrollTo(value){
+    scroll.scrollTo({x: width*(page+value)});
+  }
+
   return (
     <View style={styles.screenContainer}>
       <View style={styles.topContainer}>
@@ -31,9 +45,11 @@ function Home(props){
       </View>
       <View style={styles.scrollViewContainer}>
         <ScrollView
+          ref={scr => scroll = scr}
           pagingEnabled={true}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
+          onScroll={onScroll}
         >
           {
             categories.map((cat, index) =>
@@ -46,6 +62,26 @@ function Home(props){
             )
           }
         </ScrollView>
+        <View style={styles.navigationContainer}>
+          {
+            page != 0 &&
+            <TouchableOpacity
+              style={styles.navigationButton}
+              onPress={() => scrollTo(-1)}>
+              <Text>{'<'}</Text>
+            </TouchableOpacity>
+          }
+        </View>
+        <View style={{...styles.navigationContainer, right: 0}}>
+          {
+            page != categories.length -1 &&
+            <TouchableOpacity
+              style={styles.navigationButton}
+              onPress={() => scrollTo(1)}>
+              <Text>{'>'}</Text>
+            </TouchableOpacity>
+          }
+        </View>
       </View>
       <View style={styles.bottomContainer}>
       </View>

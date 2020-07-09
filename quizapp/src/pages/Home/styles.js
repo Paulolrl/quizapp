@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row'
   },
   topContainer: {
     height: '25%',
@@ -31,5 +32,16 @@ export const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     color: '#555'
+  },
+  navigationContainer: {
+    height: '100%',
+    flex: 1,
+    width: width*0.15,
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  navigationButton: {
+    padding: 20
   }
 })

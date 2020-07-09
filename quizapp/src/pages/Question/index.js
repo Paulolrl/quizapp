@@ -26,16 +26,6 @@ function Question(props){
   }, [])
 
   function animate(spin_value, scale_value){
-    // console.log('spin:', spin_value);
-    // Animated.timing(
-    //   scale,
-    //   {
-    //     toValue: scale_value,
-    //     duration: 400,
-    //     easing: Easing.bounce,
-    //     useNativeDriver: true
-    //   }
-    // ).start()
     Animated.parallel([
       Animated.timing(
         spin,

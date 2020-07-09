@@ -13,42 +13,48 @@ cats = {
         'name': {'pt': 'Geral', 'en': 'General'},
         'color': '#b1f0e8',
         'identifier': 'GENERAL',
-        'description': {'pt': 'Perguntas de conhecimento geral', 'en': 'general knowledge questions'}
+        'description': {'pt': 'Perguntas de conhecimento geral', 'en': 'general knowledge questions'},
+        'count': 0
     },
     'MOVIES': {
         'id': '11',
         'name': {'pt': 'Filmes', 'en': 'Movies'},
         'color': '#eb7ab6',
         'identifier': 'MOVIES',
-        'description': {'pt': 'Perguntas sobre filmes', 'en': 'movies questions'}
+        'description': {'pt': 'Perguntas sobre filmes', 'en': 'movies questions'},
+        'count': 0
     },
     'GEOGRAPHY': {
         'id': '22',
         'name': {'pt': 'Geografia', 'en': 'Geography'},
         'color': '#e0f567',
         'identifier': 'GEOGRAPHY',
-        'description': {'pt': 'Perguntas sobre geografia', 'en': 'geography questions'}
+        'description': {'pt': 'Perguntas sobre geografia', 'en': 'geography questions'},
+        'count': 0
     },
     'VIDEO_GAMES': {
         'id': '15',
         'name': {'pt': 'Video Games', 'en': 'Video Games'},
         'color': '#ca67f5',
         'identifier': 'VIDEO_GAMES',
-        'description': {'pt': 'Perguntas sobre video games', 'en': 'video games questions'}
+        'description': {'pt': 'Perguntas sobre video games', 'en': 'video games questions'},
+        'count': 0
     },
     'HISTORY': {
         'id': '23',
         'name': {'pt': 'História', 'en': 'History'},
         'color': '#804204',
         'identifier': 'HISTORY',
-        'description': {'pt': 'Perguntas sobre história', 'en': 'history questions'}
+        'description': {'pt': 'Perguntas sobre história', 'en': 'history questions'},
+        'count': 0
     },
     'SPORTS': {
         'id': '21',
         'name': {'pt': 'Esportes', 'en': 'Sports'},
         'color': '#94d1c4',
         'identifier': 'SPORTS',
-        'description': {'pt': 'Perguntas sobre esportes', 'en': 'sports questions'}
+        'description': {'pt': 'Perguntas sobre esportes', 'en': 'sports questions'},
+        'count': 0
     }
 }
 
