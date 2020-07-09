@@ -51,7 +51,17 @@ class DataBase():
         return list(self.db_admin.users.find({}))
 
     def get_user(self, uid):
-        return self.db_admin.users.find({'_id': uid})
+        categories = self.get_all_categories()
+        user = self.db_admin.users.find_one({'_id': uid})
+        changed = False
+        for cat in categories:
+            identifier = cat['identifier']
+            if identifier not in user['progress']:
+                changed = True
+                user['progress'][identifier] = 0
+        if changed:
+            self.db_admin.users.update_one({'_id': user['_id']}, {'$set': {'progress': user['progress']}})
+        return user
 
 # db = DataBase()
 # db.create_user('fad89fds7a98fkw', {'email': 'paulo.lu@g.com', 'name': 'Paulo Lucas Rodrigues'})

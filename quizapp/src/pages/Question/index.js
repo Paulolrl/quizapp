@@ -8,7 +8,7 @@ import { shuffleArray } from '../../utils';
 
 function Question(props){
 
-  const { identifier, color } = props.route.params;
+  const { category } = props.route.params;
   const [questions, setQuestions] = useState([{}]);
   const [current, setCurrent] = useState(0);
   const [spin, setSpin] = useState(new Animated.Value(0));
@@ -16,8 +16,7 @@ function Question(props){
 
   useEffect(() => {
     async function fetchQuestions() {
-      console.log({filters: {type: identifier}});
-      let res = await getQuestions({filters: {category: identifier}});
+      let res = await getQuestions({filters: {category: category.identifier}});
       shuffleArray(res);
       setQuestions(res);
     }
@@ -90,7 +89,7 @@ function Question(props){
         <QuestionCard
           question={questions[current]}
           onAnswerPress={handleAnswerPress}
-          color={color}
+          color={category.color}
         />
       </Animated.View>
     </View>

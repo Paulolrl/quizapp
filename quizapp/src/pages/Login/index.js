@@ -2,18 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, TextInput } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { styles } from './styles.js';
+import { getUser } from '../../services/api.js';
+import TouchableWithLoading from '../../components/TouchableWithLoading';
 
 function Login(props){
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function onAuthStateChanged(user) {
     if(user)
-      props.navigation.navigate('Home')
+      getUserAndContinue();
   }
 
+  async function getUserAndContinue(){
+    try{
+      let user = await getUser();
+      console.log('user:', user);
+      props.navigation.navigate('Home');
+    }catch(e){
+      setError('Erro ao buscar usuário')
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -21,17 +34,21 @@ function Login(props){
   }, []);
 
   function handleLogin(){
+    setLoading(true);
     if(email && password)
       auth()
         .signInWithEmailAndPassword(email, password)
         .then(() => {
-          props.navigation.navigate('Home')
+          console.log('funcionou!');
         })
         .catch(error => {
           setError('Usuário ou senha inválido');
+          setLoading(false);
         });
-    else
-      setError('Preencha a senha e email')
+    else{
+      setError('Preencha a senha e email');
+      setLoading(false)
+    }
   }
 
   return (
@@ -57,17 +74,17 @@ function Login(props){
       <View style={styles.buttonsContainer}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Signup')}
-          style={styles.button}
+          style={{...styles.button, marginRight: 10}}
         >
           <Text style={styles.label}>Criar Conta</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        <TouchableWithLoading
+          loading={loading}
+          color={'#555'}
+          label={'Entrar'}
           onPress={handleLogin}
-          style={{...styles.button, marginLeft: 10}}
-        >
-          <Text style={styles.label}>Entrar</Text>
-        </TouchableOpacity>
+        />
       </View>
     </View>
   )

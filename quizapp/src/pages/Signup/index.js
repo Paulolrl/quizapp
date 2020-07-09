@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, TextInput, ActivityIndicator } from 'reac
 import auth from '@react-native-firebase/auth';
 import { styles } from './styles.js';
 import { createUser } from '../../services/api.js';
+import TouchableWithLoading from '../../components/TouchableWithLoading';
 
 function Signup(props){
 
@@ -73,20 +74,12 @@ function Signup(props){
         error &&
         <Text style={styles.errorText}>{error}</Text>
       }
-      <TouchableOpacity
+      <TouchableWithLoading
+        loading={loading}
+        color={'#555'}
+        label={'Criar'}
         onPress={handleSignup}
-        style={styles.button}
-        enabled={false}
-      >
-        {
-          loading &&
-          <ActivityIndicator color={'#555'} style={{position: 'absolute'}}/>
-        }
-
-        <Text style={{...styles.label, color: loading? 'transparent': '#555'}}>Criar</Text>
-
-      </TouchableOpacity>
-
+      />
     </View>
   )
 

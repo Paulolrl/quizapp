@@ -15,7 +15,7 @@ function Home(props){
   useEffect(() => {
     async function fetchCategories(){
       let res = await getCategories();
-      console.log(res);
+      // console.log(res);
       // let questions = await getQuestions({filters: {}});
       // updateQuestion({_id: questions[0]['_id'], ans_id: 1})
       // console.log(questions);
@@ -25,7 +25,7 @@ function Home(props){
   }, []);
 
   function handleCategoryPress(category){
-    props.navigation.navigate('Question', {identifier: category.identifier, color: category.color})
+    props.navigation.navigate('Question', {category})
   }
 
   function onScroll(event) {
