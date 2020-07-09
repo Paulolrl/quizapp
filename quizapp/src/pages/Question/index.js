@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
-import { getQuestions } from '../../services/api.js';
+import { getQuestions, updateQuestion, updateRemoteUserProgress } from '../../services/api.js';
 import { styles } from './styles.js';
 import QuestionCard from '../../components/QuestionCard';
 import { shuffleArray } from '../../utils';
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { updateUserProgress } from '../../actions';
+import { updateUser } from '../../services/api.js'
 
 function Question(props){
 
   const { category } = props.route.params;
+  const { user } = props;
   const [questions, setQuestions] = useState([{}]);
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(user.progress[category.identifier]);
   const [spin, setSpin] = useState(new Animated.Value(0));
   const [scale, setScale] = useState(new Animated.Value(1));
 
   useEffect(() => {
     async function fetchQuestions() {
       let res = await getQuestions({filters: {category: category.identifier}});
-      shuffleArray(res);
+      // shuffleArray(res);
       setQuestions(res);
     }
 
@@ -49,11 +53,16 @@ function Question(props){
 
   function handleAnswerPress(question, ans){
     if(question.right_answer == ans.id){
-      animate(1, 0.5)
+      if(current + 1 > user.progress[category.identifier]){
+        props.updateUserProgress(category.identifier, current + 1);
+        updateRemoteUserProgress({category: category.identifier, value: current + 1});
+      }
+      animate(1, 0.5);
       setTimeout(() => {
         setCurrent(current + 1);
-        animate(0, 1)
-      }, 400)
+
+        animate(0, 1);
+      }, 400);
     } else {
       // A loop is needed for continuous animation
       Animated.loop(
@@ -68,6 +77,7 @@ function Question(props){
         ])
         , { iterations: 3 }).start();
     }
+    updateQuestion({_id: question._id, ans_id: ans.id});
   }
 
   return(
@@ -87,7 +97,7 @@ function Question(props){
         }}
       >
         <QuestionCard
-          question={questions[current]}
+          question={questions[current] || {}}
           onAnswerPress={handleAnswerPress}
           color={category.color}
         />
@@ -97,4 +107,11 @@ function Question(props){
 }
 
 
-export default Question;
+const mapStateToProps = store => ({
+  user: store.user
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ updateUserProgress }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);

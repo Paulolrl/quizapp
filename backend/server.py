@@ -31,6 +31,7 @@ def get_questions(uid):
 @api.route('/quiz/questions/update', methods=['POST'])
 @protected
 def update_question(uid):
+    print('entrou no update_question', request.data)
     body = json_util.loads(request.data)
     db.update_question(body['_id'], body['ans_id'])
     return 'Questão atualizada'

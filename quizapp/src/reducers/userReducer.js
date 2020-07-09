@@ -1,17 +1,19 @@
-import { SET_USER } from '../actions';
+import { SET_USER, UPDATE_USER_PROGRESS } from '../actions';
 
-const initialState = {
-  name: 'TESTE',
-  email: 'teste@teste.com',
-  progress: {}
-}
+const initialState = {progress: {}}
 
 export const userReducer = (state = initialState, action) => {
-  console.log('no reducer');
+  let newState;
   switch(action.type){
     case SET_USER:
-      console.log('entrou no caso certo');
-      return action.user;
+      newState = {...action.user};
+      newState.progress = {...newState['progress'], ...state['progress']}
+      return newState;
+    case UPDATE_USER_PROGRESS:
+      newState = {...state};
+      newState.progress[action.category] = action.level;
+      console.log('newState:', newState);
+      return newState;
     default: {
       return state;
     }

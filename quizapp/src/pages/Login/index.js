@@ -16,20 +16,25 @@ function Login(props){
   const [password, setPassword] = useState();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  let closed = false;
 
   function onAuthStateChanged(user) {
-    if(user)
+    if(user && !closed){
+      closed = true;
       getUserAndContinue();
+    }
   }
 
   async function getUserAndContinue(){
     try{
       let user = await getUser();
-      console.log('user:', user);
+      console.log('entrou nessa parte!!');
+      // setUnmounted(true);
       props.setUser(user);
       props.navigation.dispatch(StackActions.replace('Home'));
     }catch(e){
       setError('Erro ao buscar usuário')
+      closed = false;
     }
     setLoading(false);
   }

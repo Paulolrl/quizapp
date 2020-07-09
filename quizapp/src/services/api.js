@@ -37,6 +37,12 @@ export async function updateQuestion(body){
   return res.data;
 }
 
+export async function updateRemoteUserProgress(body){
+  let headers = await getHeaders();
+  let res = await api.post('user/update_progress', body, headers).catch(e => console.log('update questions:', e));
+  return res.data;
+}
+
 export async function createUser(body){
   let headers = await getHeaders();
   let res = await api.post('user/create', body, headers).catch(e => console.log('create user:', e));
