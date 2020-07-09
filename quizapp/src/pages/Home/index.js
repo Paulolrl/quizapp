@@ -3,6 +3,7 @@ import { View, ScrollView, Text, TouchableOpacity, Dimensions } from 'react-nati
 import { getCategories } from '../../services/api.js';
 import CategoryCard from '../../components/CategoryCard';
 import { styles } from './styles.js';
+import { connect } from 'react-redux';
 
 const { width } = Dimensions.get('window');
 
@@ -57,6 +58,7 @@ function Home(props){
                 <CategoryCard
                   category={cat}
                   onCategoryPress={handleCategoryPress}
+                  userProgress={props.user.progress[cat.identifier]}
                 />
               </View>
             )
@@ -90,4 +92,8 @@ function Home(props){
 
 }
 
-export default Home;
+const mapStateToProps = store => ({
+  user: store.user
+});
+
+export default connect(mapStateToProps)(Home);

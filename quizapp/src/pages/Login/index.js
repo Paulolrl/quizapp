@@ -4,6 +4,11 @@ import auth from '@react-native-firebase/auth';
 import { styles } from './styles.js';
 import { getUser } from '../../services/api.js';
 import TouchableWithLoading from '../../components/TouchableWithLoading';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { setUser } from '../../actions';
+import { StackActions } from '@react-navigation/native';
+
 
 function Login(props){
 
@@ -21,7 +26,8 @@ function Login(props){
     try{
       let user = await getUser();
       console.log('user:', user);
-      props.navigation.navigate('Home');
+      props.setUser(user);
+      props.navigation.dispatch(StackActions.replace('Home'));
     }catch(e){
       setError('Erro ao buscar usuário')
     }
@@ -91,4 +97,9 @@ function Login(props){
 
 }
 
-export default Login;
+const mapStateToProps = store => ({});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ setUser }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
