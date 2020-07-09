@@ -12,24 +12,17 @@ export const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     height: '50%',
+    backgroundColor: 'blue',
     width: '100%'
   },
-  categoryContainer: {
+  containerTeste: {
     width,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  topContainer: {
-    height: '25%',
-    justifyContent: 'center'
-  },
-  bottomContainer: {
-    height: '25%'
-  },
-  title: {
-    fontSize: 40,
-    fontWeight: 'bold',
-    color: '#555'
+  animContainer: {
+    width: '100%',
+    alignItems: 'center'
   }
 })
