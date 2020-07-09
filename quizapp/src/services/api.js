@@ -31,6 +31,13 @@ export async function getQuestions(filters){
   return res.data;
 }
 
+export async function getRandomQuestions(body){
+  let headers = await getHeaders();
+  let res = await api.post('quiz/questions/random', body, headers).catch(e => console.log('random questions:', e));
+  console.log('aquiii', res.data);
+  return res.data;
+}
+
 export async function updateQuestion(body){
   let headers = await getHeaders();
   let res = await api.post('quiz/questions/update', body, headers).catch(e => console.log('update questions:', e));
@@ -39,7 +46,7 @@ export async function updateQuestion(body){
 
 export async function updateRemoteUserProgress(body){
   let headers = await getHeaders();
-  let res = await api.post('user/update_progress', body, headers).catch(e => console.log('update questions:', e));
+  let res = await api.post('user/update_progress', body, headers).catch(e => console.log('update progress:', e));
   return res.data;
 }
 

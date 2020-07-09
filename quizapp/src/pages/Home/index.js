@@ -11,16 +11,25 @@ function Home(props){
 
   const [categories, setCategories] = useState([]);
   const [page, setPage] = useState(0);
+  const [mode, setMode] = useState('NORMAL');
   let scroll;
 
   useEffect(() => {
     async function fetchCategories(){
-      let res = await getCategories();
-      // console.log(res);
-      // let questions = await getQuestions({filters: {}});
-      // updateQuestion({_id: questions[0]['_id'], ans_id: 1})
-      // console.log(questions);
-      setCategories(res);
+      if(mode == 'NORMAL'){
+        let res = await getCategories();
+        // console.log(res);
+        // let questions = await getQuestions({filters: {}});
+        // updateQuestion({_id: questions[0]['_id'], ans_id: 1})
+        // console.log(questions);
+        setCategories(res);
+      }else{
+        setCategories([{
+          identifier: 'RANDOM',
+          name: {pt: 'Aleatório'},
+          color: '#ddd'
+        }]);
+      }
     }
     fetchCategories();
   }, []);
@@ -59,6 +68,7 @@ function Home(props){
                   category={cat}
                   onCategoryPress={handleCategoryPress}
                   userProgress={props.user.progress[cat.identifier]}
+                  mode={mode}
                 />
               </View>
             )

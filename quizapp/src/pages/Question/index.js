@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
-import { getQuestions, updateQuestion, updateRemoteUserProgress } from '../../services/api.js';
+import { getQuestions, updateQuestion, updateRemoteUserProgress, getRandomQuestions } from '../../services/api.js';
 import { styles } from './styles.js';
 import QuestionCard from '../../components/QuestionCard';
 import { shuffleArray } from '../../utils';
@@ -14,13 +14,17 @@ function Question(props){
   const { category } = props.route.params;
   const { user } = props;
   const [questions, setQuestions] = useState([{}]);
-  const [current, setCurrent] = useState(user.progress[category.identifier]);
+  const [current, setCurrent] = useState(category.identifier != 'RANDOM'? user.progress[category.identifier]: 0);
   const [spin, setSpin] = useState(new Animated.Value(0));
   const [scale, setScale] = useState(new Animated.Value(1));
 
   useEffect(() => {
     async function fetchQuestions() {
-      let res = await getQuestions({filters: {category: category.identifier}});
+      let res;
+      if(category.identifier != 'RANDOM')
+        res = await getQuestions({filters: {category: category.identifier}});
+      else
+        res = await getRandomQuestions({size: 100});
       // shuffleArray(res);
       setQuestions(res);
     }
@@ -53,7 +57,7 @@ function Question(props){
 
   function handleAnswerPress(question, ans){
     if(question.right_answer == ans.id){
-      if(current + 1 > user.progress[category.identifier]){
+      if(category.identifier != 'RANDOM' && current + 1 > user.progress[category.identifier]){
         props.updateUserProgress(category.identifier, current + 1);
         updateRemoteUserProgress({category: category.identifier, value: current + 1});
       }

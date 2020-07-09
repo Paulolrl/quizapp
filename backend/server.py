@@ -25,8 +25,15 @@ def protected(f):
 @protected
 def get_questions(uid):
     filters = json.loads(request.data)['filters']
-    print(filters, uid)
     return json_util.dumps(db.find_questions(filters))
+
+@api.route('/quiz/questions/random', methods=['POST'])
+@protected
+def get_random_questions(uid):
+    body = json.loads(request.data)
+    size = body['size']
+    filters = {} if 'filters' not in body else body['filters']
+    return json_util.dumps(db.find_random_questions(size, filters))
 
 @api.route('/quiz/questions/update', methods=['POST'])
 @protected

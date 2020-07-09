@@ -50,6 +50,9 @@ class DataBase():
     def get_users(self):
         return list(self.db_admin.users.find({}))
 
+    def find_random_questions(self, size, filters={}):
+        return list(self.db_quiz.questions.aggregate([{'$match': filters}, {'$sample': {'size': size}}]))
+
     def get_user(self, uid):
         categories = self.get_all_categories()
         user = self.db_admin.users.find_one({'_id': uid})
@@ -64,6 +67,8 @@ class DataBase():
         return user
 
 # db = DataBase()
+# list = db.find_random_questions(22, filters={'category': 'MOVIES'})
+# print(len(list), list)
 # db.create_user('fad89fds7a98fkw', {'email': 'paulo.lu@g.com', 'name': 'Paulo Lucas Rodrigues'})
 # print(db.get_users())
 # db.update_progress('fad89fds7a98fkw', 'MATH', 5)
