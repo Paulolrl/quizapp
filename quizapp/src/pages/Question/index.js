@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
 import { getQuestions, updateQuestion, updateRemoteUserProgress, getRandomQuestions } from '../../services/api.js';
 import { styles } from './styles.js';
 import QuestionCard from '../../components/QuestionCard';
+import MilionaireHelp from '../../components/MilionaireHelp';
 import { shuffleArray } from '../../utils';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,23 +15,33 @@ function Question(props){
   const { category } = props.route.params;
   const { user } = props;
   const [questions, setQuestions] = useState([{}]);
-  const [current, setCurrent] = useState(category.identifier != 'RANDOM'? user.progress[category.identifier]: 0);
+  const [current, setCurrent] = useState(isCategoryClassic()? user.progress[category.identifier]: 0);
   const [spin, setSpin] = useState(new Animated.Value(0));
   const [scale, setScale] = useState(new Animated.Value(1));
+  const [helpVisibility, setHelpVisibility] = useState(false);
 
   useEffect(() => {
     async function fetchQuestions() {
       let res;
-      if(category.identifier != 'RANDOM')
+      console.log(category.identifier);
+      if(isCategoryClassic()){
+        console.log('nesseee');
         res = await getQuestions({filters: {category: category.identifier}});
-      else
+      }
+      else{
+        console.log('aquiiii');
         res = await getRandomQuestions({size: 100});
+      }
       // shuffleArray(res);
       setQuestions(res);
     }
 
     fetchQuestions();
-  }, [])
+  }, []);
+
+  function isCategoryClassic(){
+    return category.identifier != 'RANDOM' && category.identifier != 'MILIONAIRE';
+  }
 
   function animate(spin_value, scale_value){
     Animated.parallel([
@@ -57,7 +68,7 @@ function Question(props){
 
   function handleAnswerPress(question, ans){
     if(question.right_answer == ans.id){
-      if(category.identifier != 'RANDOM' && current + 1 > user.progress[category.identifier]){
+      if(isCategoryClassic() && current + 1 > user.progress[category.identifier]){
         props.updateUserProgress(category.identifier, current + 1);
         updateRemoteUserProgress({category: category.identifier, value: current + 1});
       }
@@ -86,6 +97,17 @@ function Question(props){
 
   return(
     <View style={styles.screenContainer}>
+      {
+        category.identifier == 'MILIONAIRE' &&
+        <>
+          <MilionaireHelp
+            visible={helpVisibility}
+          />
+          <TouchableOpacity onPress={() => setHelpVisibility(true)}>
+            <Text>Ajuda</Text>
+          </TouchableOpacity>
+        </>
+      }
       <Animated.View
         style={{
           ...styles.animContainer,

@@ -27,6 +27,7 @@ function Login(props){
 
   async function getUserAndContinue(){
     try{
+      setLoading(true);
       let user = await getUser();
       console.log('entrou nessa parte!!');
       // setUnmounted(true);
