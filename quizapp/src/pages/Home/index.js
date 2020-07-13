@@ -79,7 +79,7 @@ function Home(props){
       </View>
       <View style={styles.bottomContainer}>
         <TabNavigator
-          tabs={[{name: 'Por Categoria', value: 'NORMAL'}, {name: 'Outros Modos', value: 'OTHERS'}]}
+          tabs={[{name: 'Categorias', value: 'NORMAL'}, {name: 'Modos', value: 'OTHERS'}]}
           onTabPress={(tab) => setMode(tab.value)}
           color={'#555'}
           selected={mode}

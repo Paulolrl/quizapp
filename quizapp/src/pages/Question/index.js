@@ -102,6 +102,7 @@ function Question(props){
         <>
           <MilionaireHelp
             visible={helpVisibility}
+            onClose={() => setHelpVisibility(false)}
           />
           <TouchableOpacity onPress={() => setHelpVisibility(true)}>
             <Text>Ajuda</Text>

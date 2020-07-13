@@ -4,7 +4,8 @@ import { styles } from './styles.js';
 
 function MilionaireHelp(props){
 
-  const { visible } = props
+  const { visible, onClose } = props
+
 
   return(
     <Modal
@@ -17,11 +18,23 @@ function MilionaireHelp(props){
     >
       <TouchableOpacity
         activeOpacity={1}
-        onPress={() => console.log('clicou nessa merda')}
+        onPress={onClose}
         style={styles.backgroundContainer}
       />
       <View style={styles.contentContainer}>
-        <Text>Testeee</Text>
+        <View>
+          <TouchableOpacity>
+            <Text>Ligação</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Text>Meio a Meio</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Text>Plateia</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   )
