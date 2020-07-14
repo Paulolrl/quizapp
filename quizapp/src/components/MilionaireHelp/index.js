@@ -1,11 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, TouchableOpacity, Text } from 'react-native';
 import { styles } from './styles.js';
+import CallHelp from '../CallHelp';
+import HalfHelp from '../HalfHelp';
 
 function MilionaireHelp(props){
 
-  const { visible, onClose } = props
+  const { visible, onClose, question } = props;
+  const [usedHelps, setUsedHelps] = useState([]);
+  const [selected, setSelected] = useState('CALL');
 
+  const buttons = [
+    {label: 'Ligação', value: 'CALL'},
+    {label: 'Meio a Meio', value: 'HALF'},
+    {label: 'Plateia', value: 'ODDS'}
+  ]
+
+  useEffect(() => {
+    console.log('usedHelps', usedHelps);
+  }, [usedHelps])
+
+  function switchHelp(){
+    console.log('fucking selected:', selected);
+    if(selected == 'CALL')
+      return(
+        <CallHelp
+          used={usedHelps.includes('CALL')}
+          onHelpEnd={() =>
+            setUsedHelps(oldUsedHelps => {
+              let newUsedHelps = [...oldUsedHelps];
+              newUsedHelps.push('CALL')
+              return newUsedHelps;
+            })
+          }
+        />
+      )
+    if(selected == 'HALF'){
+      return(
+        <HalfHelp
+          used={usedHelps.includes('HALF')}
+          onUseHelp={(ids) => {
+            setUsedHelps(oldUsedHelps => {
+              let newUsedHelps = [...oldUsedHelps];
+              newUsedHelps.push('HALF')
+              return newUsedHelps;
+            });
+            props.onUseHalfHelp(ids);
+            onClose();
+          }}
+          question={question}
+        />
+      )
+    }
+  }
 
   return(
     <Modal
@@ -22,19 +69,22 @@ function MilionaireHelp(props){
         style={styles.backgroundContainer}
       />
       <View style={styles.contentContainer}>
-        <View>
-          <TouchableOpacity>
-            <Text>Ligação</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Text>Meio a Meio</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Text>Plateia</Text>
-          </TouchableOpacity>
+        <View style={styles.buttonsContainer}>
+          {
+            buttons.map((button) => (
+              <TouchableOpacity
+                key={button.value}
+                style={styles.helpButton}
+                onPress={() => setSelected(button.value)}
+              >
+                <Text>{button.label}</Text>
+              </TouchableOpacity>
+            ))
+          }
         </View>
+        {
+          switchHelp()
+        }
       </View>
     </Modal>
   )

@@ -19,6 +19,19 @@ export const styles = StyleSheet.create({
     marginRight: 'auto',
     marginTop: 'auto',
     marginBottom: 'auto',
+  },
+  buttonsContainer: {
+    height: '20%',
+    width: '100%',
+    flexDirection: 'row',
+    backgroundColor: 'red',
+    alignSelf: 'flex-end',
+    justifyContent: 'space-between',
+    marginTop: 40
+  },
+  helpButton: {
+    flex: 1,
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center'
   }

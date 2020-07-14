@@ -19,6 +19,7 @@ function Question(props){
   const [spin, setSpin] = useState(new Animated.Value(0));
   const [scale, setScale] = useState(new Animated.Value(1));
   const [helpVisibility, setHelpVisibility] = useState(false);
+  const [invalidIds, setInvalidIds] = useState([]);
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -67,6 +68,7 @@ function Question(props){
   }
 
   function handleAnswerPress(question, ans){
+    setInvalidIds([]);
     if(question.right_answer == ans.id){
       if(isCategoryClassic() && current + 1 > user.progress[category.identifier]){
         props.updateUserProgress(category.identifier, current + 1);
@@ -95,6 +97,7 @@ function Question(props){
     updateQuestion({_id: question._id, ans_id: ans.id});
   }
 
+
   return(
     <View style={styles.screenContainer}>
       {
@@ -103,6 +106,8 @@ function Question(props){
           <MilionaireHelp
             visible={helpVisibility}
             onClose={() => setHelpVisibility(false)}
+            onUseHalfHelp={setInvalidIds}
+            question={questions[current]}
           />
           <TouchableOpacity onPress={() => setHelpVisibility(true)}>
             <Text>Ajuda</Text>
@@ -127,6 +132,7 @@ function Question(props){
           question={questions[current] || {}}
           onAnswerPress={handleAnswerPress}
           color={category.color}
+          invalidIds={invalidIds}
         />
       </Animated.View>
     </View>
