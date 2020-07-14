@@ -3,6 +3,7 @@ import { Modal, View, TouchableOpacity, Text } from 'react-native';
 import { styles } from './styles.js';
 import CallHelp from '../CallHelp';
 import HalfHelp from '../HalfHelp';
+import OddsHelp from '../OddsHelp';
 
 function MilionaireHelp(props){
 
@@ -47,6 +48,22 @@ function MilionaireHelp(props){
             });
             props.onUseHalfHelp(ids);
             onClose();
+          }}
+          question={question}
+        />
+      )
+    }
+    if(selected == 'ODDS'){
+      return(
+        <OddsHelp
+          used={usedHelps.includes('ODDS')}
+          onOddsHelpUsed={() => {
+            console.log('ENTROU NA PARTE DE MARCAR COMO VISTA');
+            setUsedHelps(oldUsedHelps => {
+              let newUsedHelps = [...oldUsedHelps];
+              newUsedHelps.push('ODDS')
+              return newUsedHelps;
+            });
           }}
           question={question}
         />
