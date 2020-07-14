@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
     height: '20%',
     width: '100%',
     flexDirection: 'row',
-    backgroundColor: 'red',
     alignSelf: 'flex-end',
     justifyContent: 'space-between',
     marginTop: 40

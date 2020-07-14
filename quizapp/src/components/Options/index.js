@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from './styles.js';
 import CategoryCard from '../CategoryCard';
 const { width } = Dimensions.get('window');
@@ -49,7 +50,7 @@ function Options(props){
           <TouchableOpacity
             style={styles.navigationButton}
             onPress={() => scrollTo(-1, page)}>
-            <Text>{'<'}</Text>
+            <Icon name='chevron-left' size={30} color='#555' />
           </TouchableOpacity>
         }
       </View>
@@ -59,7 +60,7 @@ function Options(props){
           <TouchableOpacity
             style={styles.navigationButton}
             onPress={() => scrollTo(1, page)}>
-            <Text>{'>'}</Text>
+            <Icon name='chevron-right' size={30} color='#555' />
           </TouchableOpacity>
         }
       </View>

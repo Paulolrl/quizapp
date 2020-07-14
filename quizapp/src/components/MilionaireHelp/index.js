@@ -22,7 +22,6 @@ function MilionaireHelp(props){
   }, [usedHelps])
 
   function switchHelp(){
-    console.log('fucking selected:', selected);
     if(selected == 'CALL')
       return(
         <CallHelp
