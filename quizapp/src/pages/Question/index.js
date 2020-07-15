@@ -9,6 +9,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateUserProgress } from '../../actions';
 import { updateUser } from '../../services/api.js'
+import { InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
+
+const adUnitId = 'ca-app-pub-5449822122541186/3737517224';
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ['games', 'quiz'],
+});
 
 function Question(props){
 
@@ -20,6 +28,7 @@ function Question(props){
   const [scale, setScale] = useState(new Animated.Value(1));
   const [helpVisibility, setHelpVisibility] = useState(false);
   const [invalidIds, setInvalidIds] = useState([]);
+  const [loadedAd, setLoadedAd] = useState(false);
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -36,8 +45,21 @@ function Question(props){
       // shuffleArray(res);
       setQuestions(res);
     }
-
     fetchQuestions();
+
+    const eventListener = interstitial.onAdEvent(type => {
+      console.log('aqui:', type);
+      if (type === AdEventType.LOADED) {
+        setLoadedAd(true);
+      }
+    });
+
+    interstitial.load();
+
+    return () => {
+      eventListener();
+    };
+
   }, []);
 
   function isCategoryClassic(){
@@ -68,6 +90,9 @@ function Question(props){
   }
 
   function handleAnswerPress(question, ans){
+    if(loadedAd)
+      interstitial.show();
+
     setInvalidIds([]);
     if(question.right_answer == ans.id){
       if(isCategoryClassic() && current + 1 > user.progress[category.identifier]){
