@@ -9,14 +9,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateUserProgress } from '../../actions';
 import { updateUser } from '../../services/api.js'
-import { InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
+import { BannerAd, BannerAdSize, InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
 
-const adUnitId = 'ca-app-pub-5449822122541186/3737517224';
-
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-  requestNonPersonalizedAdsOnly: true,
-  keywords: ['games', 'quiz'],
-});
+const adIntId = __DEV__? TestIds.INTERSTITIAL: 'ca-app-pub-5449822122541186/3737517224';
+const adBanId = __DEV__? TestIds.BANNER: 'ca-app-pub-5449822122541186/5242170583';
 
 function Question(props){
 
@@ -29,38 +25,46 @@ function Question(props){
   const [helpVisibility, setHelpVisibility] = useState(false);
   const [invalidIds, setInvalidIds] = useState([]);
   const [loadedAd, setLoadedAd] = useState(false);
+  const [intAd, setIntAd] = useState();
 
   useEffect(() => {
     async function fetchQuestions() {
       let res;
       console.log(category.identifier);
       if(isCategoryClassic()){
-        console.log('nesseee');
         res = await getQuestions({filters: {category: category.identifier}});
       }
       else{
-        console.log('aquiiii');
         res = await getRandomQuestions({size: 100});
       }
       // shuffleArray(res);
       setQuestions(res);
     }
     fetchQuestions();
-
-    const eventListener = interstitial.onAdEvent(type => {
-      console.log('aqui:', type);
-      if (type === AdEventType.LOADED) {
-        setLoadedAd(true);
-      }
-    });
-
-    interstitial.load();
-
-    return () => {
-      eventListener();
-    };
-
   }, []);
+
+  useEffect(() => {
+    if(current%5 == 0){
+      const interstitial = InterstitialAd.createForAdRequest(adIntId, {
+        requestNonPersonalizedAdsOnly: true,
+        // keywords: ['games', 'quiz'],
+      });
+
+      setIntAd(interstitial);
+
+      const eventListener = interstitial.onAdEvent((type, error) => {
+        console.log('aqui:', type);
+        if (type === AdEventType.LOADED) {
+          setLoadedAd(true);
+          eventListener();
+        }
+      });
+
+      interstitial.load();
+    }
+  }, [current]);
+
+
 
   function isCategoryClassic(){
     return category.identifier != 'RANDOM' && category.identifier != 'MILIONAIRE';
@@ -90,8 +94,11 @@ function Question(props){
   }
 
   function handleAnswerPress(question, ans){
-    if(loadedAd)
-      interstitial.show();
+
+    if(loadedAd && (current + 1)%5 == 0){
+      intAd.show();
+      setLoadedAd(false);
+    }
 
     setInvalidIds([]);
     if(question.right_answer == ans.id){
@@ -160,6 +167,15 @@ function Question(props){
           invalidIds={invalidIds}
         />
       </Animated.View>
+      <View style={styles.bannerContainer}>
+        <BannerAd
+          unitId={adBanId}
+          size={BannerAdSize.BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: true,
+          }}
+        />
+      </View>
     </View>
   )
 }

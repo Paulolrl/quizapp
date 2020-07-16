@@ -24,5 +24,9 @@ export const styles = StyleSheet.create({
   animContainer: {
     width: '100%',
     alignItems: 'center'
+  },
+  bannerContainer: {
+    position: 'absolute',
+    bottom: '3%'
   }
 })

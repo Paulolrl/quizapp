@@ -12,7 +12,6 @@ export const userReducer = (state = initialState, action) => {
     case UPDATE_USER_PROGRESS:
       newState = {...state};
       newState.progress[action.category] = action.level;
-      console.log('newState:', newState);
       return newState;
     default: {
       return state;
