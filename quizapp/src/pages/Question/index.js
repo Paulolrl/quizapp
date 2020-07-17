@@ -47,13 +47,13 @@ function Question(props){
     if(current%5 == 0){
       const interstitial = InterstitialAd.createForAdRequest(adIntId, {
         requestNonPersonalizedAdsOnly: true,
-        // keywords: ['games', 'quiz'],
+        keywords: ['games', 'quiz', 'fun'],
       });
 
       setIntAd(interstitial);
 
       const eventListener = interstitial.onAdEvent((type, error) => {
-        console.log('aqui:', type);
+        console.log('aqui:', type, error);
         if (type === AdEventType.LOADED) {
           setLoadedAd(true);
           eventListener();

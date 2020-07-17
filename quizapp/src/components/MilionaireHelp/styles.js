@@ -26,12 +26,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'flex-end',
     justifyContent: 'space-between',
-    marginTop: 40
   },
-  helpButton: {
-    flex: 1,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
+  closeButton: {
+    marginLeft: 'auto',
+    margin: 10,
+  },
+
 })

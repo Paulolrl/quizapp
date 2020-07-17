@@ -4,6 +4,8 @@ import { styles } from './styles.js';
 import CallHelp from '../CallHelp';
 import HalfHelp from '../HalfHelp';
 import OddsHelp from '../OddsHelp';
+import HelpButton from '../HelpButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 function MilionaireHelp(props){
 
@@ -12,9 +14,9 @@ function MilionaireHelp(props){
   const [selected, setSelected] = useState('CALL');
 
   const buttons = [
-    {label: 'Ligação', value: 'CALL'},
-    {label: 'Meio a Meio', value: 'HALF'},
-    {label: 'Plateia', value: 'ODDS'}
+    {label: 'Ligação', value: 'CALL', icon: 'phone'},
+    {label: 'Meio a Meio', value: 'HALF', icon: 'ban'},
+    {label: 'Plateia', value: 'ODDS', icon: 'trophy'}
   ]
 
   useEffect(() => {
@@ -84,17 +86,17 @@ function MilionaireHelp(props){
         onPress={onClose}
         style={styles.backgroundContainer}
       />
+
+
+
       <View style={styles.contentContainer}>
+        <TouchableOpacity style={styles.closeButton}>
+          <Icon name={'times'} size={35}/>
+        </TouchableOpacity>
         <View style={styles.buttonsContainer}>
           {
             buttons.map((button) => (
-              <TouchableOpacity
-                key={button.value}
-                style={styles.helpButton}
-                onPress={() => setSelected(button.value)}
-              >
-                <Text>{button.label}</Text>
-              </TouchableOpacity>
+              <HelpButton button={button} selected={selected} onHelpPress={setSelected}/>
             ))
           }
         </View>
