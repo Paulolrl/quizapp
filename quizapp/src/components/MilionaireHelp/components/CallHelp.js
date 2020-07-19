@@ -6,7 +6,7 @@ function CallHelp(props){
 
   const { used } = props;
   const [inUse, setInUse] = useState(false);
-  const [clock, setClock] = useState(3);
+  const [clock, setClock] = useState(30);
   const [intervalRef, setIntervalRef] = useState();
 
 
@@ -29,24 +29,28 @@ function CallHelp(props){
       {
         !used && !inUse &&
         <>
-          <Text>Você pode ligar para alguém por 30s para pedir ajuda</Text>
-          <TouchableOpacity onPress={() => setInUse(true)}>
-            <Text>Usar</Text>
+          <Text style={styles.text}>Você pode ligar para alguém por 30s para pedir ajuda</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setInUse(true)}>
+            <Text style={styles.label}>Usar</Text>
           </TouchableOpacity>
         </>
       }
       {
         inUse &&
         <>
-          <Text>{clock}</Text>
-          <TouchableOpacity onPress={runClock}>
-            <Text>Iniciar</Text>
+          <Text style={styles.clock}>{clock >= 10? clock: '0' + clock}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={runClock}>
+            <Text style={styles.label}>Iniciar</Text>
           </TouchableOpacity>
         </>
       }
       {
         used &&
-        <Text>Essa ajuda já foi utilizada</Text>
+        <Text style={styles.text}>Essa ajuda já foi utilizada</Text>
       }
     </View>
   )

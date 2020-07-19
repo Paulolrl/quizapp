@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { getRandomInt } from '../../utils';
+import { getRandomInt } from '../../../utils';
+import { styles } from './styles.js';
 
 function OddsHelp(props){
 
@@ -48,29 +49,39 @@ function OddsHelp(props){
   }, [show]);
 
   return(
-    <>
+    <View style={styles.helpContainer}>
       {
         !used && !show &&
-        <View>
-          <Text>Você pode ver a estatistica das respostas de outros usuários</Text>
-          <TouchableOpacity onPress={() => {setShow(true); flag = true}}>
-            <Text>Usar</Text>
+        <>
+          <Text style={styles.text}>Você pode ver a estatistica das respostas de outros usuários</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {setShow(true); flag = true}}>
+            <Text style={styles.label}>Usar</Text>
           </TouchableOpacity>
-        </View>
+        </>
       }
       {
         show &&
-        <View>
+        <>
           {
-            odds.map((odd) => <Text>{odd.odd}</Text>)
+            odds.map((odd, index) => (
+              <View style={styles.oddContainer}>
+                <Text>{index + 1 + '-'}</Text>
+                <View style={styles.progressBar}>
+                  <View style={{...styles.progress, width: odd.odd + '%'}}/>
+                </View>
+                <Text>{(odd.odd < 10? '0': '') + odd.odd + '%'}</Text>
+              </View>
+            ))
           }
-        </View>
+        </>
       }
       {
         used &&
-        <View><Text>Essa ajuda já foi utilizada</Text></View>
+        <Text style={styles.text}>Essa ajuda já foi utilizada</Text>
       }
-    </>
+    </View>
   )
 }
 

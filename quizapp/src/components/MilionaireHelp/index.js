@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, TouchableOpacity, Text } from 'react-native';
 import { styles } from './styles.js';
-import CallHelp from '../CallHelp';
-import HalfHelp from '../HalfHelp';
-import OddsHelp from '../OddsHelp';
+import CallHelp from './components/CallHelp';
+import HalfHelp from './components/HalfHelp';
+import OddsHelp from './components/OddsHelp';
 import HelpButton from '../HelpButton';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -87,10 +87,11 @@ function MilionaireHelp(props){
         style={styles.backgroundContainer}
       />
 
-
-
       <View style={styles.contentContainer}>
-        <TouchableOpacity style={styles.closeButton}>
+        <TouchableOpacity
+          onPress={onClose}
+          style={styles.closeButton}
+        >
           <Icon name={'times'} size={35}/>
         </TouchableOpacity>
         <View style={styles.buttonsContainer}>

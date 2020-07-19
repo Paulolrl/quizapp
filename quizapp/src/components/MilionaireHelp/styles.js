@@ -30,6 +30,5 @@ export const styles = StyleSheet.create({
   closeButton: {
     marginLeft: 'auto',
     margin: 10,
-  },
-
+  }
 })

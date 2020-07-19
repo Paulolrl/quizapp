@@ -28,5 +28,13 @@ export const styles = StyleSheet.create({
   bannerContainer: {
     position: 'absolute',
     bottom: '3%'
+  },
+  header: {
+    position: 'absolute',
+    width: '100%',
+    top: '2%',
+    padding: 10,
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 })

@@ -3,17 +3,16 @@ import { StyleSheet } from 'react-native';
 
 
 export const styles = StyleSheet.create({
-  helpContainer: {
-    flex: 1,
-    width: '100%',
+  levelContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 10
+    alignItems: 'center'
   },
-  title: {
-    fontSize: 30,
+  prize: {
     fontWeight: 'bold',
+    fontSize: 20
+  },
+  level: {
     color: '#555',
-    textAlign: 'center'
+    fontSize: 17
   }
 })

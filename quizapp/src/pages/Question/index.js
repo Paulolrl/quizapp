@@ -4,12 +4,16 @@ import { getQuestions, updateQuestion, updateRemoteUserProgress, getRandomQuesti
 import { styles } from './styles.js';
 import QuestionCard from '../../components/QuestionCard';
 import MilionaireHelp from '../../components/MilionaireHelp';
+import MilionaireLevel from '../../components/MilionaireLevel';
 import { shuffleArray } from '../../utils';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { updateUserProgress } from '../../actions';
 import { updateUser } from '../../services/api.js'
 import { BannerAd, BannerAdSize, InterstitialAd, AdEventType, TestIds } from '@react-native-firebase/admob';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { StackActions } from '@react-navigation/native';
+
 
 const adIntId = __DEV__? TestIds.INTERSTITIAL: 'ca-app-pub-5449822122541186/3737517224';
 const adBanId = __DEV__? TestIds.BANNER: 'ca-app-pub-5449822122541186/5242170583';
@@ -35,7 +39,18 @@ function Question(props){
         res = await getQuestions({filters: {category: category.identifier}});
       }
       else{
-        res = await getRandomQuestions({size: 100});
+        if(category.identifier == 'RANDOM')
+          res = await getRandomQuestions({size: 100});
+        else {
+          res = [];
+          let auxRes = await getRandomQuestions({size: 5, filters: {difficulty: 'EASY'}});
+          res = res.concat(auxRes);
+          auxRes = await getRandomQuestions({size: 5, filters: {difficulty: 'MEDIUM'}});
+          res = res.concat(auxRes);
+          auxRes = await getRandomQuestions({size: 5, filters: {difficulty: 'HARD'}});
+          res = res.concat(auxRes);
+          console.log('res no final:', res);
+        }
       }
       // shuffleArray(res);
       setQuestions(res);
@@ -44,7 +59,11 @@ function Question(props){
   }, []);
 
   useEffect(() => {
-    if(current%5 == 0){
+    if(current == questions.length){
+      let message = 'Parabéns, você respondeu todas as questões';
+      props.navigation.dispatch(StackActions.replace('EndScreen', {message}));
+    }
+    else if(current%5 == 0){
       const interstitial = InterstitialAd.createForAdRequest(adIntId, {
         requestNonPersonalizedAdsOnly: true,
         keywords: ['games', 'quiz', 'fun'],
@@ -125,6 +144,11 @@ function Question(props){
           Animated.timing(spin, { toValue: 0.0, duration: 12, easing: Easing.bounce, useNativeDriver: true })
         ])
         , { iterations: 3 }).start();
+
+        if(category.identifier == 'MILIONAIRE'){
+          let message = 'Você perdeu, mas não desanime e tente novamente!';
+          props.navigation.dispatch(StackActions.replace('EndScreen', {message}));
+        }
     }
     updateQuestion({_id: question._id, ans_id: ans.id});
   }
@@ -132,6 +156,20 @@ function Question(props){
 
   return(
     <View style={styles.screenContainer}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <Icon name={'chevron-left'} size={35}/>
+        </TouchableOpacity>
+        {
+          category.identifier == 'MILIONAIRE' &&
+          <TouchableOpacity
+            style={{marginLeft: 'auto', alignItems: 'center'}}
+            onPress={() => setHelpVisibility(true)}>
+            <Icon name={'question-circle'} size={30}/>
+            <Text>Ajuda</Text>
+          </TouchableOpacity>
+        }
+      </View>
       {
         category.identifier == 'MILIONAIRE' &&
         <>
@@ -141,9 +179,7 @@ function Question(props){
             onUseHalfHelp={setInvalidIds}
             question={questions[current]}
           />
-          <TouchableOpacity onPress={() => setHelpVisibility(true)}>
-            <Text>Ajuda</Text>
-          </TouchableOpacity>
+          <MilionaireLevel current={current}/>
         </>
       }
       <Animated.View

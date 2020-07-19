@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { shuffleArray } from '../../utils';
+import { shuffleArray } from '../../../utils';
+import { styles } from './styles.js';
 
 function HalfHelp(props){
 
@@ -18,21 +19,23 @@ function HalfHelp(props){
   }
 
   return(
-    <>
+    <View style={styles.helpContainer}>
       {
         !used &&
-        <View>
-          <Text>Metade das respostas são desabilitadas</Text>
-          <TouchableOpacity onPress={useHelp}>
-            <Text>Usar</Text>
+        <>
+          <Text style={styles.text}>Metade das respostas são desabilitadas</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={useHelp}>
+            <Text style={styles.label}>Usar</Text>
           </TouchableOpacity>
-        </View>
+        </>
       }
       {
         used &&
-        <View><Text>Essa ajuda já foi utilizada</Text></View>
+        <Text style={styles.text}>Essa ajuda já foi utilizada</Text>
       }
-    </>
+    </View>
   )
 }
 
