@@ -34,7 +34,6 @@ export async function getQuestions(filters){
 export async function getRandomQuestions(body){
   let headers = await getHeaders();
   let res = await api.post('quiz/questions/random', body, headers).catch(e => console.log('random questions:', e));
-  console.log(res.data);
   return res.data;
 }
 

@@ -49,7 +49,6 @@ function Question(props){
           res = res.concat(auxRes);
           auxRes = await getRandomQuestions({size: 5, filters: {difficulty: 'HARD'}});
           res = res.concat(auxRes);
-          console.log('res no final:', res);
         }
       }
       // shuffleArray(res);
