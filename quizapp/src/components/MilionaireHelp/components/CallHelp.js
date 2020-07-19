@@ -6,11 +6,13 @@ function CallHelp(props){
 
   const { used } = props;
   const [inUse, setInUse] = useState(false);
+  const [running, setRunning] = useState(false);
   const [clock, setClock] = useState(30);
   const [intervalRef, setIntervalRef] = useState();
 
 
   function runClock(){
+    setRunning(true);
     setIntervalRef(setInterval(() => {
         setClock(clock => clock - 1);
     }, 1000));
@@ -41,11 +43,14 @@ function CallHelp(props){
         inUse &&
         <>
           <Text style={styles.clock}>{clock >= 10? clock: '0' + clock}</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={runClock}>
-            <Text style={styles.label}>Iniciar</Text>
-          </TouchableOpacity>
+          {
+            !running &&
+            <TouchableOpacity
+              style={styles.button}
+              onPress={runClock}>
+              <Text style={styles.label}>Iniciar</Text>
+            </TouchableOpacity>
+          }
         </>
       }
       {
