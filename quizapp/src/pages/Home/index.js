@@ -29,7 +29,7 @@ function Home(props){
         {
           identifier: 'MILIONAIRE',
           name: {pt: 'Quem quer ser um endinheirado?'},
-          color: '#2686fc'
+          color: '#63a9ff'
         },
         {
           identifier: 'WYRATHER',
