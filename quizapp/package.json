@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/admob": "^7.3.2",
@@ -24,6 +25,7 @@
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^3.0.7",
     "react-native-screens": "^2.9.0",
+    "react-native-simple-gauge": "^0.3.0",
     "react-native-vector-icons": "^7.0.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",

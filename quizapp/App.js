@@ -8,6 +8,7 @@ import Home from './src/pages/Home';
 import Signup from './src/pages/Signup';
 import Question from './src/pages/Question';
 import EndScreen from './src/pages/EndScreen';
+import WYRather from './src/pages/WYRather';
 import { persistor, store } from './src/store/index.js';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
@@ -45,6 +46,7 @@ function App() {
             <Stack.Screen name='Signup' component={Signup} />
             <Stack.Screen name='Question' component={Question} />
             <Stack.Screen name='EndScreen' component={EndScreen} />
+            <Stack.Screen name='WYRather' component={WYRather} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

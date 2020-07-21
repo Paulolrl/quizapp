@@ -48,7 +48,10 @@ function Home(props){
   }, [mode]);
 
   function handleCategoryPress(category){
-    props.navigation.navigate('Question', {category})
+    if(category.identifier != 'WYRATHER')
+      props.navigation.navigate('Question', {category});
+    else
+      props.navigation.navigate('WYRather', {category});
   }
 
 
