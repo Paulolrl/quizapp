@@ -43,7 +43,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {
-    fontSize: 20,
-  },
+  orContainer: {
+    position: 'absolute',
+    height: 50,
+    aspectRatio: 1,
+    borderRadius: 25,
+    zIndex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ddd'
+  }
 })

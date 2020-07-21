@@ -84,6 +84,9 @@ function WYRather(props){
           </TouchableOpacity>
         </View>
       }
+      <View style={styles.orContainer}>
+        <Text>Or</Text>
+      </View>
       <TouchableOpacity
         onPress={() => handleAnswerPress(0)}
         style={{...styles.questionCard, backgroundColor: '#0060de', marginBottom: 5}}
