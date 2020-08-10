@@ -32,6 +32,7 @@ export const styles = StyleSheet.create({
     zIndex: 5,
     backgroundColor: 'white',
     padding: 10,
+    aspectRatio: 1,
     borderRadius: 10
   },
   textView: {
@@ -52,5 +53,19 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#ddd'
+  },
+  button: {
+    marginTop: 20,
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    color: '#aaa',
+    borderColor: '#555'
+  },
+  label: {
+    fontWeight: '500',
+    color: '#555'
   }
+
 })

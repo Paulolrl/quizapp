@@ -20,10 +20,10 @@ const adBanId = __DEV__? TestIds.BANNER: 'ca-app-pub-5449822122541186/5242170583
 
 function Question(props){
 
-  const { category } = props.route.params;
+  const { category, index } = props.route.params;
   const { user } = props;
   const [questions, setQuestions] = useState([{}]);
-  const [current, setCurrent] = useState(isCategoryClassic()? user.progress[category.identifier]: 0);
+  const [current, setCurrent] = useState(isCategoryClassic()? index: 0);
   const [spin, setSpin] = useState(new Animated.Value(0));
   const [scale, setScale] = useState(new Animated.Value(1));
   const [helpVisibility, setHelpVisibility] = useState(false);
@@ -59,8 +59,9 @@ function Question(props){
 
   useEffect(() => {
     if(current == questions.length){
-      let message = 'Parabéns, você respondeu todas as questões';
-      props.navigation.dispatch(StackActions.replace('EndScreen', {message}));
+      let message = 'Você respondeu todas as questões';
+      let title = 'Parabéns!';
+      props.navigation.dispatch(StackActions.replace('EndScreen', {message, title}));
     }
     else if(current%5 == 0){
       const interstitial = InterstitialAd.createForAdRequest(adIntId, {
@@ -145,8 +146,9 @@ function Question(props){
         , { iterations: 3 }).start();
 
         if(category.identifier == 'MILIONAIRE'){
-          let message = 'Você perdeu, mas não desanime e tente novamente!';
-          props.navigation.dispatch(StackActions.replace('EndScreen', {message}));
+          let message = 'infelizmente você errou, tente novamente';
+          let title = 'Você perdeu!';
+          props.navigation.dispatch(StackActions.replace('EndScreen', {message, title}));
         }
     }
     updateQuestion({_id: question._id, ans_id: ans.id});
@@ -157,7 +159,7 @@ function Question(props){
     <View style={styles.screenContainer}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => props.navigation.goBack()}>
-          <Icon name={'chevron-left'} size={35}/>
+          <Icon name={'chevron-left'} size={35} color='#555'/>
         </TouchableOpacity>
         {
           category.identifier == 'MILIONAIRE' &&

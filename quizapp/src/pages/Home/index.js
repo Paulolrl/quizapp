@@ -48,10 +48,14 @@ function Home(props){
   }, [mode]);
 
   function handleCategoryPress(category){
-    if(category.identifier != 'WYRATHER')
-      props.navigation.navigate('Question', {category});
-    else
+    if(category.identifier != 'WYRATHER'){
+      if(category.identifier == 'RANDOM' || category.identifier == 'MILIONAIRE')
+        props.navigation.navigate('Question', {category});
+      else
+        props.navigation.navigate('QuestionList', {category});
+    } else {
       props.navigation.navigate('WYRather', {category});
+    }
   }
 
 

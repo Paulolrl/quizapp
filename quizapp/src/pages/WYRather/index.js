@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { styles } from './styles.js';
 import { getRandomQuestions, updateQuestion } from '../../services/api.js';
 import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
+import { StackActions } from '@react-navigation/native';
 
 const size = 100;
 const width = 10;
@@ -39,7 +40,7 @@ function WYRather(props){
 
   const [current, setCurrent] = useState(0);
   const [showStats, setShowStats] = useState(false);
-  const question = questions[current];
+  const question = questions[current] || {};
 
   function handleAnswerPress(index){
     // if(!showStats)
@@ -58,8 +59,14 @@ function WYRather(props){
   }
 
   function handleContinue(){
-    setCurrent(current + 1);
     setShowStats(false);
+    if(current < questions.length - 1)
+      setCurrent(current + 1);
+    else {
+      let message = 'As questões acabaram, volte mais tarde';
+      let title = 'Acabou!';
+      props.navigation.dispatch(StackActions.replace('EndScreen', {message, title}));
+    }
   }
 
   return (
@@ -79,8 +86,10 @@ function WYRather(props){
             <Text style={{...styles.text, color: calcPercentage().color}}>{calcPercentage().bigger + '%'}</Text>
           </View>
         </AnimatedGaugeProgress>
-          <TouchableOpacity onPress={handleContinue}>
-            <Text>Continuar</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleContinue}>
+            <Text style={styles.label}>Continuar</Text>
           </TouchableOpacity>
         </View>
       }

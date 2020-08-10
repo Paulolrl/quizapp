@@ -7,6 +7,7 @@ import Login from './src/pages/Login';
 import Home from './src/pages/Home';
 import Signup from './src/pages/Signup';
 import Question from './src/pages/Question';
+import QuestionList from './src/pages/QuestionList';
 import EndScreen from './src/pages/EndScreen';
 import WYRather from './src/pages/WYRather';
 import { persistor, store } from './src/store/index.js';
@@ -45,6 +46,7 @@ function App() {
             <Stack.Screen name='Home' component={Home} />
             <Stack.Screen name='Signup' component={Signup} />
             <Stack.Screen name='Question' component={Question} />
+            <Stack.Screen name='QuestionList' component={QuestionList} />
             <Stack.Screen name='EndScreen' component={EndScreen} />
             <Stack.Screen name='WYRather' component={WYRather} />
           </Stack.Navigator>

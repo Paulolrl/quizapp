@@ -1,20 +1,23 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { StackActions } from '@react-navigation/native';
-
+import { styles } from './styles.js';
 
 function EndScreen(props){
-  const { message } = props.route.params;
+  const { message, title } = props.route.params;
 
   function handleContinue(){
-    props.navigation.dispatch(StackActions.replace('Home'));
+    props.navigation.dispatch(StackActions.popToTop());
   }
 
   return (
-    <View>
+    <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
       <Text>{message}</Text>
-      <TouchableOpacity onPress={handleContinue}>
-        <Text>Continuar</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleContinue}>
+        <Text style={styles.label}>Continuar</Text>
       </TouchableOpacity>
     </View>
   )
